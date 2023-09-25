@@ -1,12 +1,12 @@
 const express = require('express');
+const morgan = require('morgan');
+const { default: helmet } = require('helmet');
+const compression = require('compression');
 
 /**
  * Instance
  */
 const app = express();
-const morgan = require('morgan');
-const { default: helmet } = require('helmet');
-const compression = require('compression');
 
 /**
  * Middleware
@@ -26,14 +26,17 @@ app.use(compression());
  * Init db
  */
 
+require('./dbs/init.mongodb');
+const { checkOverload } = require('./helpers/check.connect');
+checkOverload()
 /**
- * Init routes 
+ * Init routes
  */
 app.get('/', (req, res, next) => {
-  const strCompress = 'Hello Alex';
+  // const strCompress = 'Hello Alex';
   return res.status(200).json({
     message: 'Welcome to our website',
-    metadata: strCompress.repeat(10000)
+    // metadata: strCompress.repeat(10000)
   });
 });
 
