@@ -26,20 +26,21 @@ app.use(compression());
 /**
  * Init db
  */
-
 require('./dbs/init.mongodb');
-const { checkOverload } = require('./helpers/check.connect');
-checkOverload();
+// const { checkOverload } = require('./helpers/check.connect');
+// checkOverload();
+
 /**
  * Init routes
  */
-app.get('/', (req, res, next) => {
-  // const strCompress = 'Hello Alex';
-  return res.status(200).json({
-    message: 'Welcome to our website',
-    // metadata: strCompress.repeat(10000)
-  });
-});
+// app.get('/', (req, res, next) => {
+//   // const strCompress = 'Hello Alex';
+//   return res.status(200).json({
+//     message: 'Welcome to our website',
+//     // metadata: strCompress.repeat(10000)
+//   });
+// });
+app.use('', require('./routes'));
 
 /**
  * Handle error
