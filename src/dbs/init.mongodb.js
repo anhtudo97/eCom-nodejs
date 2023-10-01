@@ -17,8 +17,8 @@ class Database {
 
   connect(type = 'mongodb') {
     mongoose
-      .connect(connectString, { maxPoolSize: 50 })
-      .then((_) => console.log(`Connected Mongodb Success: ${countConnect()}`))
+      .connect(connectString, { maxPoolSize: 100 })
+      // .then((_) => console.log(`Connected Mongodb Success: ${countConnect()}`))
       .catch((err) => console.log(`Error: ${err}`));
 
     if (1 === 1) {
