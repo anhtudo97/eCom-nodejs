@@ -4,6 +4,7 @@
 
 POST {{url_dev}}/shop/signup
 Content-Type: application/json
+x-api-key: febfb4cbc21b53842a3ed440a296d45a69f26681e5206e8ec6d33353f72b385d7c14a2478822540979926a5a8407a3cd8aa671ce61113a1229884e3b8980e986
 
 {
     "name": "tuanh",
