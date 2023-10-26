@@ -27,7 +27,6 @@ class AccessService {
     // 1
     const foundShop = await findByEmail({ email });
     if (!foundShop) throw new BadRequestError('Shop not register');
-    console.log(2222, foundShop);
 
     // 2
     const match = await bcrypt.compare(password, foundShop.password);
@@ -59,6 +58,13 @@ class AccessService {
       }),
       tokens,
     };
+  };
+
+  static logout = async (keyStore) => {
+    const deleteKey = await KeyTokenService.removeKeyById(keyStore._id);
+
+    console.log(deleteKey);
+    return deleteKey;
   };
 
   static signUp = async ({ name, email, password }) => {
