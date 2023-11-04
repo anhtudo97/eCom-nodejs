@@ -4,9 +4,9 @@ const shopModel = require('../models/shop.model');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const KeyTokenService = require('./keyToken.service');
-const { createTokenPair } = require('../auth/authUtils');
+const { createTokenPair, verifyJWT } = require('../auth/authUtils');
 const { getInfoData } = require('../utils');
-const { BadRequestError, AuthFailureError } = require('../core/error.response');
+const { BadRequestError, AuthFailureError, ForbiddenError } = require('../core/error.response');
 const { findByEmail } = require('./shop.service');
 
 const RoleShop = {
@@ -151,6 +151,57 @@ class AccessService {
     //   };
     // }
   };
+  /**
+   * check token is used
+   * if yes remove this token in key store
+   */
+  static handleRefreshToken = async refreshToken => {
+    const foundToken = await KeyTokenService.findByRefreshTokenUsed(refreshToken)
+    if (foundToken) {
+      // decode xem đây là ai
+      const { userId, email } = await verifyJWT(refreshToken, foundToken.privateKey)
+
+      // remove
+      await KeyTokenService.deleteKeyById(userId)
+      throw new ForbiddenError('Something went wrong!!! pls relogin')
+    }
+
+    // kiểm tra token có đang được sử dụng
+    const holderToken = await KeyTokenService.findByRefreshToken(refreshToken)
+    if (!holderToken) throw new AuthFailureError('Shop is not registered')
+
+    // verify token
+    const { userId, email } = await verifyJWT(refreshToken, holderToken.privateKey)
+    console.log(`[P]:: Token verify`, { userId, email });
+
+    // check shop
+    const foundShop = await findByEmail({ email })
+    if (!foundShop) throw new AuthFailureError('Shop is not registered')
+
+    // create new token pair
+    const tokens = await createTokenPair(
+      { userId, email },
+      holderToken.publicKey,
+      holderToken.privateKey,
+    );
+
+    // update refresh token used
+    await holderToken.updateOne({
+      $set: {
+        refreshToken: tokens.refreshToken,
+      },
+      $addToSet: {
+        refreshTokensUsed: refreshToken, // đã được sử dụng để lấy accesstoken mới rồi
+      }
+    })
+
+    return {
+      user: {
+        userId, email
+      },
+      tokens
+    }
+  }
 }
 
 module.exports = AccessService;
