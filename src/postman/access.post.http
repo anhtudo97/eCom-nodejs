@@ -4,7 +4,7 @@
 
 POST {{url_dev}}/shop/signup
 Content-Type: application/json
-x-api-key: febfb4cbc21b53842a3ed440a296d45a69f26681e5206e8ec6d33353f72b385d7c14a2478822540979926a5a8407a3cd8aa671ce61113a1229884e3b8980e986
+x-api-key: 18fd73e83077b678ca3881e6f97cb0c808709b94123b0f3fd2b990e204b94a1a3f6f214cc8b12bf12adfb4cc6397cad1094808d5f1eec0d1183976851143e302
 
 {
     "name": "tuanh",
@@ -16,9 +16,17 @@ x-api-key: febfb4cbc21b53842a3ed440a296d45a69f26681e5206e8ec6d33353f72b385d7c14a
 
 POST {{url_dev}}/shop/signin
 Content-Type: application/json
-x-api-key: febfb4cbc21b53842a3ed440a296d45a69f26681e5206e8ec6d33353f72b385d7c14a2478822540979926a5a8407a3cd8aa671ce61113a1229884e3b8980e986
+x-api-key: 18fd73e83077b678ca3881e6f97cb0c808709b94123b0f3fd2b990e204b94a1a3f6f214cc8b12bf12adfb4cc6397cad1094808d5f1eec0d1183976851143e302
 
 {
     "email": "anhtudo93@gmail.com",
     "password": "123tuanh"
 }
+
+### logout
+
+POST {{url_dev}}/shop/logout
+Content-Type: application/json
+x-api-key: 18fd73e83077b678ca3881e6f97cb0c808709b94123b0f3fd2b990e204b94a1a3f6f214cc8b12bf12adfb4cc6397cad1094808d5f1eec0d1183976851143e302
+x-client-id: 653aca42c94c06f95b35fe91
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTNhY2E0MmM5NGMwNmY5NWIzNWZlOTEiLCJlbWFpbCI6ImFuaHR1ZG85M0BnbWFpbC5jb20iLCJpYXQiOjE2OTgzNTMxODksImV4cCI6MTY5ODUyNTk4OX0.AFAD0S3-RXpfV6-hB3LXtARONHYodiNfn7azFySa3vE

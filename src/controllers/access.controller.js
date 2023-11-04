@@ -5,10 +5,16 @@ const AccessService = require('../services/access.service');
 
 class AccessController {
   login = async (req, res, next) => {
-    console.log(111, req.body);
     new SuccessResponse({
       metadata: await AccessService.login(req.body),
-    }).send(res)
+    }).send(res);
+  };
+
+  logout = async (req, res, next) => {
+    new SuccessResponse({
+      message: 'Logout success!',
+      metadata: await AccessService.logout(req.keyStore),
+    }).send(res);
   };
 
   signUp = async (req, res, next) => {
@@ -18,8 +24,8 @@ class AccessController {
       mesage: 'Registered OK!',
       metadata: await AccessService.signUp(req.body),
       options: {
-        limit: 10
-      }
+        limit: 10,
+      },
     }).send(res);
 
     // return res.status(201).json(await AccessService.signUp(req.body));
