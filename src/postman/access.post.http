@@ -39,3 +39,25 @@ Content-Type: application/json
 x-api-key: 2ef130aa447b1a406b52f1220196b493304783426bd3361fef94127f29f946c1bdaed41e2aca029d42f50a1f0bd1f6ef2a9eb9aed7c2b73f35288d71d33bb3f5
 x-client-id: 6546a3257fe40565da5822f8
 x-rtoken-id: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTQ2YTMyNTdmZTQwNTY1ZGE1ODIyZjgiLCJlbWFpbCI6ImFuaHR1ZG85M0BnbWFpbC5jb20iLCJpYXQiOjE3MDAwNzUyNzUsImV4cCI6MTcwMDY4MDA3NX0.tqpEE6hjZ4XUcif7isOdxV9IeI_EPXAO52NSWBkU4xM
+
+
+### create product
+POST {{url_dev}}/product
+Content-Type: application/json
+x-api-key: 2ef130aa447b1a406b52f1220196b493304783426bd3361fef94127f29f946c1bdaed41e2aca029d42f50a1f0bd1f6ef2a9eb9aed7c2b73f35288d71d33bb3f5
+x-client-id: 6546a3257fe40565da5822f8
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTQ2YTMyNTdmZTQwNTY1ZGE1ODIyZjgiLCJlbWFpbCI6ImFuaHR1ZG85M0BnbWFpbC5jb20iLCJpYXQiOjE3MDA0MjA0MjksImV4cCI6MTcwMDU5MzIyOX0.zP78YmwNhm8PHswjTWoZ3d_V9oxeZaKFHRSyS017iRA
+
+{
+    "product_name": "IPhone 11 Pro max",
+    "product_description": "Máy tính bảng",
+    "product_price": 1000000,
+    "product_type": "Electronics",
+    "product_thumb": "product_thumb",
+    "product_quantity": 5,
+    "product_attributes": {
+        "manufacturer": "Apple",
+        "model": "iPhone 11",
+        "color": "Red"
+    }
+}

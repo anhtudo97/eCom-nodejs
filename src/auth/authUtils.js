@@ -89,7 +89,7 @@ const authenticationV2 = asyncHandler(async (req, res, next) => {
   if (!keyStore) throw new NotFoundError('Not found key store');
 
   //3
-  if(req.headers[HEADER.REFRESHTOKEN]) {
+  if (req.headers[HEADER.REFRESHTOKEN]) {
     try {
       const refreshToken = req.headers[HEADER.REFRESHTOKEN];
       const decodeUser = JWT.verify(refreshToken, keyStore.privateKey);
@@ -114,6 +114,7 @@ const authenticationV2 = asyncHandler(async (req, res, next) => {
       throw new AuthFailureError('Invalid user');
     }
     req.keyStore = keyStore;
+    req.user = decodeUser; // {userId, email}
     return next();
   } catch (error) {
     throw error;
