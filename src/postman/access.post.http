@@ -62,3 +62,25 @@ authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTQ2YTMyNTdm
         "color": "Red"
     }
 }
+
+### Create a product furniture
+
+POST {{url_dev}}/product
+Content-Type: application/json
+x-api-key: 2ef130aa447b1a406b52f1220196b493304783426bd3361fef94127f29f946c1bdaed41e2aca029d42f50a1f0bd1f6ef2a9eb9aed7c2b73f35288d71d33bb3f5
+x-client-id: 6546a3257fe40565da5822f8
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTQ2YTMyNTdmZTQwNTY1ZGE1ODIyZjgiLCJlbWFpbCI6ImFuaHR1ZG85M0BnbWFpbC5jb20iLCJpYXQiOjE3MDExMTExMjAsImV4cCI6MTcwMTI4MzkyMH0.UBTzij9mf4PfaFQguXeNIu3FwAdA6yKRw_9vSyfdcnM
+
+{
+    "product_name": "Furniture 11 Pro max",
+    "product_description": "Máy tính bảng",
+    "product_price": 1000000,
+    "product_type": "Furniture",
+    "product_thumb": "product_thumb",
+    "product_quantity": 5,
+    "product_attributes": {
+        "brand": "FurnitureA",
+        "size": "11",
+        "material": "Carbon"
+    }
+}
