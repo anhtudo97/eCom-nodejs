@@ -111,3 +111,9 @@ x-api-key: 2ef130aa447b1a406b52f1220196b493304783426bd3361fef94127f29f946c1bdaed
 x-client-id: 6546a3257fe40565da5822f8
 authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTQ2YTMyNTdmZTQwNTY1ZGE1ODIyZjgiLCJlbWFpbCI6ImFuaHR1ZG85M0BnbWFpbC5jb20iLCJpYXQiOjE3MDE4ODI5ODcsImV4cCI6MTcwMjA1NTc4N30.BA1kzZdQ8ZFzwyo5yI2aUf4RNSZzuSqNEa9Lu_Tr50s
 
+
+### Search product by key
+
+GET {{url_dev}}/product/search/IPhone 12
+Content-Type: application/json
+x-api-key: 2ef130aa447b1a406b52f1220196b493304783426bd3361fef94127f29f946c1bdaed41e2aca029d42f50a1f0bd1f6ef2a9eb9aed7c2b73f35288d71d33bb3f5

@@ -88,6 +88,22 @@ class ProductController {
     }).send(res);
 
   };
+
+  /**
+   * @desc Full text search product
+   * @param {Number} req limit
+   * @param {Number} req skip
+   */
+  getListSearchProduct = async (req, res, next) => {
+    // For v2
+    new SuccessResponse({
+      message: 'Get list search product successful!',
+      metadata: await ProductServiceV2.searchProducts({
+        searchKey: req.params.searchKey
+      }),
+    }).send(res);
+
+  };
   // END QUERY
 }
 

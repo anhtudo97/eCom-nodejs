@@ -73,6 +73,12 @@ const productSchema = new Schema(
     },
 );
 
+// Create index
+productSchema.index({
+    product_name: 'text',
+    product_description: 'text'
+})
+
 // Document middleware: run before .save() and .created() ...
 productSchema.pre('save', function (next) {
     this.product_slug = slugify(this.product_name, { lower: true })
