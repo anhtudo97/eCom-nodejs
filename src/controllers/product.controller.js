@@ -28,19 +28,9 @@ class ProductController {
 
   /**
    * @desc publish product
-   * @param {Number} req limit
-   * @param {Number} req skip
+   * @param {String} req id
    */
   publishProductByShop = async (req, res, next) => {
-    // For v1
-    // new SuccessResponse({
-    //   message: 'Create new product success!',
-    //   metadata: await ProductService.createProduct(req.body.product_type,{
-    //     ... req.body,
-    //     product_shop: req.user.userId
-    //   }),
-    // }).send(res);
-
     // For v2
     new SuccessResponse({
       message: 'Published product success!',
@@ -51,6 +41,20 @@ class ProductController {
     }).send(res);
 
   };
+  /**
+   * @desc unpublish product
+   * @param {String} req id
+   */
+  unPublishProductByShop = async (req, res, next) => {
+    // For v2
+    new SuccessResponse({
+      message: 'UnPublished product success!',
+      metadata: await ProductServiceV2.unPublishProductByShop({
+        product_id: req.params.id,
+        product_shop: req.user.userId
+      }),
+    }).send(res);
+  };
 
   // QUERY  
   /**
@@ -59,15 +63,6 @@ class ProductController {
    * @param {Number} req skip
    */
   getAllDraftsForShop = async (req, res, next) => {
-    // For v1
-    // new SuccessResponse({
-    //   message: 'Create new product success!',
-    //   metadata: await ProductService.createProduct(req.body.product_type,{
-    //     ... req.body,
-    //     product_shop: req.user.userId
-    //   }),
-    // }).send(res);
-
     // For v2
     new SuccessResponse({
       message: 'All drafts is fetched!',
@@ -84,15 +79,6 @@ class ProductController {
    * @param {Number} req skip
    */
   getAllPublishedForShop = async (req, res, next) => {
-    // For v1
-    // new SuccessResponse({
-    //   message: 'Create new product success!',
-    //   metadata: await ProductService.createProduct(req.body.product_type,{
-    //     ... req.body,
-    //     product_shop: req.user.userId
-    //   }),
-    // }).send(res);
-
     // For v2
     new SuccessResponse({
       message: 'All pubished is fetched!',

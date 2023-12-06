@@ -35,8 +35,23 @@ const publishProductByShop = async ({ product_shop, product_id }) => {
     return modifiedCount
 }
 
+const unPublishProductByShop = async ({ product_shop, product_id }) => {
+    const shop = await product.findOne({
+        product_shop: new Types.ObjectId(product_shop),
+        _id: new Types.ObjectId(product_id)
+    })
+
+    if (!shop) return null
+
+    shop.isDraft = true
+    shop.isPublished = false
+    const { modifiedCount } = await shop.updateOne(shop)
+    return modifiedCount
+}
+
 module.exports = {
     findAllDraftForShop,
+    findAllPublishedForShop,
     publishProductByShop,
-    findAllPublishedForShop
+    unPublishProductByShop
 }
