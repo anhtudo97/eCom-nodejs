@@ -2,6 +2,7 @@
 
 const { clothing, electronic, product, furniture } = require('../models/product.model');
 const { BadRequestError } = require('../core/error.response');
+const { findAllDraftForShop, publishProductByShop, findAllPublishedForShop } = require('../models/repositories/product.repository');
 // define factory class to create product
 class ProductFactory {
     /*
@@ -13,12 +14,32 @@ class ProductFactory {
     static registerProductType(type, classRef) {
         ProductFactory.productRegistry[type] = classRef
     }
+
     static async createProduct(type, payload) {
         const productClass = ProductFactory.productRegistry[type]
         if (!productClass) throw new BadRequestError(`Invalid Product types ${type}`)
 
         return new productClass(payload).createProduct()
     }
+
+    // QUERY
+    static async findAllDraftForShop({ product_shop, limit = 50, skip = 0 }) {
+        const query = { product_shop, isDraft: true }
+
+        return await findAllDraftForShop({ query, limit, skip })
+    }
+    static async findAllPublishedForShop({ product_shop, limit = 50, skip = 0 }) {
+        const query = { product_shop, isPublished: true }
+
+        return await findAllPublishedForShop({ query, limit, skip })
+    }
+    // END QUERY
+
+    // PUT
+    static async publishProductByShop({ product_shop, product_id }) {
+        return await publishProductByShop({ product_shop, product_id })
+    }
+    // END PUT
 }
 
 // define base product class

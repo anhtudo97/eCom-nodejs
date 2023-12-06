@@ -47,18 +47,18 @@ POST {{url_dev}}/product
 Content-Type: application/json
 x-api-key: 2ef130aa447b1a406b52f1220196b493304783426bd3361fef94127f29f946c1bdaed41e2aca029d42f50a1f0bd1f6ef2a9eb9aed7c2b73f35288d71d33bb3f5
 x-client-id: 6546a3257fe40565da5822f8
-authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTQ2YTMyNTdmZTQwNTY1ZGE1ODIyZjgiLCJlbWFpbCI6ImFuaHR1ZG85M0BnbWFpbC5jb20iLCJpYXQiOjE3MDA1OTA5MzQsImV4cCI6MTcwMDc2MzczNH0.NN10bT0R2UGHR8fXSYNVjbgjgLYHlWVVr9DC5PlXr9Y
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTQ2YTMyNTdmZTQwNTY1ZGE1ODIyZjgiLCJlbWFpbCI6ImFuaHR1ZG85M0BnbWFpbC5jb20iLCJpYXQiOjE3MDE3OTIyODYsImV4cCI6MTcwMTk2NTA4Nn0.7Fvq0QbK-1ZO1bOaAJXOdISxboOfM0mZGFU2PyKniNg
 
 {
-    "product_name": "IPhone 11 Pro max",
-    "product_description": "Máy tính bảng",
+    "product_name": "IPhone 12 Pro max",
+    "product_description": "Máy tính bảng 22222",
     "product_price": 1000000,
     "product_type": "Electronics",
     "product_thumb": "product_thumb",
     "product_quantity": 5,
     "product_attributes": {
-        "manufacturer": "Apple",
-        "model": "iPhone 11",
+        "manufacturer": "Apple123",
+        "model": "iPhone 12",
         "color": "Red"
     }
 }
@@ -84,3 +84,30 @@ authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTQ2YTMyNTdm
         "material": "Carbon"
     }
 }
+
+### Get all draft for shop
+
+GET {{url_dev}}/product/drafts
+Content-Type: application/json
+x-api-key: 2ef130aa447b1a406b52f1220196b493304783426bd3361fef94127f29f946c1bdaed41e2aca029d42f50a1f0bd1f6ef2a9eb9aed7c2b73f35288d71d33bb3f5
+x-client-id: 6546a3257fe40565da5822f8
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTQ2YTMyNTdmZTQwNTY1ZGE1ODIyZjgiLCJlbWFpbCI6ImFuaHR1ZG85M0BnbWFpbC5jb20iLCJpYXQiOjE3MDE4ODI5ODcsImV4cCI6MTcwMjA1NTc4N30.BA1kzZdQ8ZFzwyo5yI2aUf4RNSZzuSqNEa9Lu_Tr50s
+
+
+### Get all published for shop
+
+GET {{url_dev}}/product/published
+Content-Type: application/json
+x-api-key: 2ef130aa447b1a406b52f1220196b493304783426bd3361fef94127f29f946c1bdaed41e2aca029d42f50a1f0bd1f6ef2a9eb9aed7c2b73f35288d71d33bb3f5
+x-client-id: 6546a3257fe40565da5822f8
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTQ2YTMyNTdmZTQwNTY1ZGE1ODIyZjgiLCJlbWFpbCI6ImFuaHR1ZG85M0BnbWFpbC5jb20iLCJpYXQiOjE3MDE4ODI5ODcsImV4cCI6MTcwMjA1NTc4N30.BA1kzZdQ8ZFzwyo5yI2aUf4RNSZzuSqNEa9Lu_Tr50s
+
+
+### Publish product by Shop
+
+POST {{url_dev}}/product/publish/656f4a6567d8bcde230533ea
+Content-Type: application/json
+x-api-key: 2ef130aa447b1a406b52f1220196b493304783426bd3361fef94127f29f946c1bdaed41e2aca029d42f50a1f0bd1f6ef2a9eb9aed7c2b73f35288d71d33bb3f5
+x-client-id: 6546a3257fe40565da5822f8
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTQ2YTMyNTdmZTQwNTY1ZGE1ODIyZjgiLCJlbWFpbCI6ImFuaHR1ZG85M0BnbWFpbC5jb20iLCJpYXQiOjE3MDE4ODI5ODcsImV4cCI6MTcwMjA1NTc4N30.BA1kzZdQ8ZFzwyo5yI2aUf4RNSZzuSqNEa9Lu_Tr50s
+

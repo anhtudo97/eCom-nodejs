@@ -18,12 +18,91 @@ class ProductController {
     // For v2
     new SuccessResponse({
       message: 'Create new product success!',
-      metadata: await ProductServiceV2.createProduct(req.body.product_type,{
-        ... req.body,
+      metadata: await ProductServiceV2.createProduct(req.body.product_type, {
+        ...req.body,
         product_shop: req.user.userId
       }),
     }).send(res);
+
   };
+
+  /**
+   * @desc publish product
+   * @param {Number} req limit
+   * @param {Number} req skip
+   */
+  publishProductByShop = async (req, res, next) => {
+    // For v1
+    // new SuccessResponse({
+    //   message: 'Create new product success!',
+    //   metadata: await ProductService.createProduct(req.body.product_type,{
+    //     ... req.body,
+    //     product_shop: req.user.userId
+    //   }),
+    // }).send(res);
+
+    // For v2
+    new SuccessResponse({
+      message: 'Published product success!',
+      metadata: await ProductServiceV2.publishProductByShop({
+        product_id: req.params.id,
+        product_shop: req.user.userId
+      }),
+    }).send(res);
+
+  };
+
+  // QUERY  
+  /**
+   * @desc Get all draft for shop
+   * @param {Number} req limit
+   * @param {Number} req skip
+   */
+  getAllDraftsForShop = async (req, res, next) => {
+    // For v1
+    // new SuccessResponse({
+    //   message: 'Create new product success!',
+    //   metadata: await ProductService.createProduct(req.body.product_type,{
+    //     ... req.body,
+    //     product_shop: req.user.userId
+    //   }),
+    // }).send(res);
+
+    // For v2
+    new SuccessResponse({
+      message: 'All drafts is fetched!',
+      metadata: await ProductServiceV2.findAllDraftForShop({
+        product_shop: req.user.userId
+      }),
+    }).send(res);
+
+  };
+
+  /**
+   * @desc Get all published for shop
+   * @param {Number} req limit
+   * @param {Number} req skip
+   */
+  getAllPublishedForShop = async (req, res, next) => {
+    // For v1
+    // new SuccessResponse({
+    //   message: 'Create new product success!',
+    //   metadata: await ProductService.createProduct(req.body.product_type,{
+    //     ... req.body,
+    //     product_shop: req.user.userId
+    //   }),
+    // }).send(res);
+
+    // For v2
+    new SuccessResponse({
+      message: 'All pubished is fetched!',
+      metadata: await ProductServiceV2.findAllPublishedForShop({
+        product_shop: req.user.userId
+      }),
+    }).send(res);
+
+  };
+  // END QUERY
 }
 
 module.exports = new ProductController();
