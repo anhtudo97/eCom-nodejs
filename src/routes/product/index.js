@@ -9,6 +9,8 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/search/:searchKey', asyncHandler(productController.getListSearchProduct))
+router.get('', asyncHandler(productController.findAllProducts))
+router.get('/:product_id', asyncHandler(productController.findProduct))
 
 // authentication
 router.use(authenticationV2)

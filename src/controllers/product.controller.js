@@ -99,8 +99,32 @@ class ProductController {
     new SuccessResponse({
       message: 'Get list search product successful!',
       metadata: await ProductServiceV2.searchProducts({
-        searchKey: req.params.searchKey
+        ...req.params
       }),
+    }).send(res);
+
+  };
+
+  /**
+   * @desc find all prducts by option
+   */
+  findAllProducts = async (req, res, next) => {
+    // For v2
+    new SuccessResponse({
+      message: 'Get list product successful!',
+      metadata: await ProductServiceV2.findAllProducts(req.query),
+    }).send(res);
+
+  };
+
+  /**
+   * @desc find all prducts by option
+   */
+  findProduct = async (req, res, next) => {
+    // For v2
+    new SuccessResponse({
+      message: 'Get  product successful!',
+      metadata: await ProductServiceV2.findProduct({  ...req.params }),
     }).send(res);
 
   };
