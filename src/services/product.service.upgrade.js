@@ -2,7 +2,8 @@
 
 const { clothing, electronic, product, furniture } = require('../models/product.model');
 const { BadRequestError } = require('../core/error.response');
-const { findAllDraftForShop, publishProductByShop, findAllPublishedForShop, unPublishProductByShop, searchProductByUser, findAllProducts, findProduct } = require('../models/repositories/product.repository');
+const { findAllDraftForShop, publishProductByShop, findAllPublishedForShop, unPublishProductByShop, searchProductByUser, findAllProducts, findProduct, updateProductById } = require('../models/repositories/product.repository');
+const { Types } = require('mongoose');
 // define factory class to create product
 class ProductFactory {
     /*
@@ -22,10 +23,16 @@ class ProductFactory {
         return new productClass(payload).createProduct()
     }
 
+    static async updateProduct(type, product_id, payload) {
+        const productClass = ProductFactory.productRegistry[type]
+        if (!productClass) throw new BadRequestError(`Invalid Product types ${type}`)
+
+        return new productClass(payload).updateProduct(product_id, payload)
+    }
+
     // QUERY
     static async findAllDraftForShop({ product_shop, limit = 50, skip = 0 }) {
         const query = { product_shop, isDraft: true }
-
         return await findAllDraftForShop({ query, limit, skip })
     }
 
@@ -86,18 +93,42 @@ class Product {
             _id: product_id
         })
     }
+
+    // update product
+    async updateProduct(product_id, payload) {
+        return await updateProductById({
+            product_id, payload, model: product
+        })
+    }
 }
 
 // define sub class for different product types Clothing
 class Clothing extends Product {
     async createProduct() {
-        const newClothing = await clothing.create(this.product_attribute)
+        const newClothing = await clothing.create(this.product_attributes)
         if (!newClothing) throw new BadRequestError(`Create new Clothing error`)
 
         const newProduct = await super.createProduct()
         if (!newProduct) throw new BadRequestError(`Create new Product error`)
 
         return newProduct;
+    }
+
+    static async updateProduct(product_id) {
+        // remove all fields is null / undefined
+        const objectParams = this
+        // update ở đâu và chỗ nào
+        if (objectParams.product_attributes) {
+            // update child
+            await updateProductById({
+                model: clothing,
+                product_id,
+                payload: objectParams
+            })
+        }
+
+        const updateProduct = await super.updateProduct(product_id, objectParams)
+        return updateProduct
     }
 }
 
@@ -114,6 +145,23 @@ class Electronics extends Product {
         if (!newProduct) throw new BadRequestError(`Create new Product error`)
 
         return newProduct;
+    }
+
+    static async updateProduct(product_id) {
+        // remove all fields is null / undefined
+        const objectParams = this
+        // update ở đâu và chỗ nào
+        if (objectParams.product_attributes) {
+            // update child
+            await updateProductById({
+                model: electronic,
+                product_id,
+                payload: objectParams
+            })
+        }
+
+        const updateProduct = await super.updateProduct(product_id, objectParams)
+        return updateProduct
     }
 }
 

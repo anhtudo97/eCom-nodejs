@@ -33,6 +33,7 @@ const searchProductByUser = async ({ searchKey }) => {
 }
 
 const queryProduct = async ({ query, limit, skip }) => {
+    console.log('tuanh',  query, limit, skip);
     return await product.find(query)
         .populate('product_shop', 'name email -_id')
         .sort({ updateAt: -1 })
@@ -81,11 +82,19 @@ const findProduct = async ({ product_id, unSelect }) => {
     return await product.findById(product_id).select(unGetSelectData(unSelect))
 }
 
+const updateProductById = async ({ product_id, payload, model, isNew = true }) => {
+    return await model.findByIdAndUpdate(product_id, payload, {
+        new: isNew
+    })
+}
+
 module.exports = {
     findAllDraftForShop,
     findAllPublishedForShop,
     publishProductByShop,
     unPublishProductByShop,
     searchProductByUser,
-    findAllProducts,findProduct
+    findAllProducts,
+    findProduct,
+    updateProductById
 }

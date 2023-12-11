@@ -17,11 +17,12 @@ router.use(authenticationV2)
 
 //
 router.post('', asyncHandler(productController.createProduct));
+router.patch('/:product_id', asyncHandler(productController.updateProduct));
 router.post('/publish/:id', asyncHandler(productController.publishProductByShop));
 router.post('/unpublish/:id', asyncHandler(productController.unPublishProductByShop));
 
 // QUERY
-router.get('/drafts', asyncHandler(productController.getAllDraftsForShop))
-router.get('/published', asyncHandler(productController.getAllPublishedForShop))
+router.get('/drafts/all', asyncHandler(productController.getAllDraftsForShop))
+router.get('/published/all', asyncHandler(productController.getAllPublishedForShop))
 
 module.exports = router;
