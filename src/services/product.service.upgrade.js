@@ -4,6 +4,7 @@ const { clothing, electronic, product, furniture } = require('../models/product.
 const { BadRequestError } = require('../core/error.response');
 const { findAllDraftForShop, publishProductByShop, findAllPublishedForShop, unPublishProductByShop, searchProductByUser, findAllProducts, findProduct, updateProductById } = require('../models/repositories/product.repository');
 const { Types } = require('mongoose');
+const { updateNestedObjectParser, removeUndefinedObject } = require('../utils');
 // define factory class to create product
 class ProductFactory {
     /*
@@ -24,9 +25,13 @@ class ProductFactory {
     }
 
     static async updateProduct(type, product_id, payload) {
+        console.log('[4444] ::: ', type)
         const productClass = ProductFactory.productRegistry[type]
         if (!productClass) throw new BadRequestError(`Invalid Product types ${type}`)
 
+        console.log('[5555] ::: ', productClass)
+        // const productInstance = new productClass(payload)
+        // console.log('[P22] ::: ', productInstance)
         return new productClass(payload).updateProduct(product_id, payload)
     }
 
@@ -96,6 +101,7 @@ class Product {
 
     // update product
     async updateProduct(product_id, payload) {
+        // console.log('update')
         return await updateProductById({
             product_id, payload, model: product
         })
@@ -104,6 +110,28 @@ class Product {
 
 // define sub class for different product types Clothing
 class Clothing extends Product {
+
+    constructor({ product_name,
+        product_thumb,
+        product_description,
+        product_price,
+        product_quantity,
+        product_type,
+        product_shop,
+        product_attributes }) {
+        super({
+            product_name,
+            product_thumb,
+            product_description,
+            product_price,
+            product_quantity,
+            product_type,
+            product_shop,
+            product_attributes
+        });
+        console.log("[Con] Clothing")
+    }
+
     async createProduct() {
         const newClothing = await clothing.create(this.product_attributes)
         if (!newClothing) throw new BadRequestError(`Create new Clothing error`)
@@ -111,24 +139,31 @@ class Clothing extends Product {
         const newProduct = await super.createProduct()
         if (!newProduct) throw new BadRequestError(`Create new Product error`)
 
+        console.log('product is created')
+
         return newProduct;
     }
 
-    static async updateProduct(product_id) {
-        // remove all fields is null / undefined
-        const objectParams = this
+    async updateProduct(product_id) {
         // update ở đâu và chỗ nào
+        // const updateNest = updateNestedObjectParser(this);
+        // remove all fields is null / undefined
+        // const objectParams = await removeUndefinedObject(this)
+        
+        const updateNest = updateNestedObjectParser(this);
+        const objectParams = removeUndefinedObject(updateNest);
         if (objectParams.product_attributes) {
             // update child
             await updateProductById({
                 model: clothing,
                 product_id,
-                payload: objectParams
+                payload: updateNestedObjectParser(objectParams.product_attributes)
             })
         }
 
-        const updateProduct = await super.updateProduct(product_id, objectParams)
+        const updateProduct = await super.updateProduct(product_id, updateNestedObjectParser(objectParams))
         return updateProduct
+        // return updateProduct
     }
 }
 
@@ -147,7 +182,8 @@ class Electronics extends Product {
         return newProduct;
     }
 
-    static async updateProduct(product_id) {
+    async updateProduct(product_id) {
+        console.log('elec')
         // remove all fields is null / undefined
         const objectParams = this
         // update ở đâu và chỗ nào
@@ -166,7 +202,7 @@ class Electronics extends Product {
 }
 
 // define sub class for different product types Funiture
-class Funiture extends Product {
+class Furniture extends Product {
     async createProduct() {
         const newFurniture = await furniture.create({
             ...this.product_attributes,
@@ -184,6 +220,6 @@ class Funiture extends Product {
 // register product types 
 ProductFactory.registerProductType('Electronics', Electronics)
 ProductFactory.registerProductType('Clothing', Clothing)
-ProductFactory.registerProductType('Furniture', Funiture)
+ProductFactory.registerProductType('Furniture', Furniture)
 
 module.exports = ProductFactory
