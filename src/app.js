@@ -67,7 +67,7 @@ app.use((error, req, res,next) => {
     /*
       stack for detech error on debug phase on development mode
     */
-    // stack: error.stack,
+    stack: error.stack,
     message: error.message || 'Internal Server Error'
   }) 
 })
