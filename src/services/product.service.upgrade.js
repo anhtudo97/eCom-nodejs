@@ -5,6 +5,7 @@ const { BadRequestError } = require('../core/error.response');
 const { findAllDraftForShop, publishProductByShop, findAllPublishedForShop, unPublishProductByShop, searchProductByUser, findAllProducts, findProduct, updateProductById } = require('../models/repositories/product.repository');
 const { Types } = require('mongoose');
 const { updateNestedObjectParser, removeUndefinedObject } = require('../utils');
+const { insertInventory } = require('../models/repositories/inventory.repo');
 // define factory class to create product
 class ProductFactory {
     /*
@@ -93,10 +94,24 @@ class Product {
 
     // create new product
     async createProduct(product_id) {
-        return await product.create({
+        const newProduct = await product.create({
             ...this,
             _id: product_id
         })
+        console.log("new P", newProduct)
+
+        if (newProduct) {
+            // add product stock in inventory collection
+            console.log("run")
+
+            await insertInventory({
+                productId: newProduct._id,
+                shopId: this.product_shop,
+                stock: this.product_quantity
+            })
+        }
+
+        return newProduct
     }
 
     // update product
@@ -149,7 +164,7 @@ class Clothing extends Product {
         // const updateNest = updateNestedObjectParser(this);
         // remove all fields is null / undefined
         // const objectParams = await removeUndefinedObject(this)
-        
+
         const updateNest = updateNestedObjectParser(this);
         const objectParams = removeUndefinedObject(updateNest);
         if (objectParams.product_attributes) {

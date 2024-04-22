@@ -2,6 +2,7 @@
 
 const { clothing, electronic, product } = require('../models/product.model');
 const { BadRequestError } = require('../core/error.response');
+const { insertInventory } = require('../models/repositories/inventory.repo');
 // define factory class to create product
 class ProductFactory {
     /*
