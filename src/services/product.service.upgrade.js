@@ -98,11 +98,9 @@ class Product {
             ...this,
             _id: product_id
         })
-        console.log("new P", newProduct)
 
         if (newProduct) {
             // add product stock in inventory collection
-            console.log("run")
 
             await insertInventory({
                 productId: newProduct._id,
