@@ -59,7 +59,7 @@ const updateNestedObjectParser = object => {
   return final;
 }
 
-const convertToObjectMongodb = id => Types.ObjectId(id)
+const convertToObjectMongodb = id => new Types.ObjectId(id)
 
 module.exports = {
   getInfoData, getSelectData, unGetSelectData, removeUndefinedObject, updateNestedObjectParser, convertToObjectMongodb

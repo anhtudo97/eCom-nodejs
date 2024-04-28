@@ -1,8 +1,8 @@
 'use strict'
 
-const { BadRequestError } = require("../core/error.response")
+const { BadRequestError, NotFoundError } = require("../core/error.response")
 const discountModel = require("../models/discount.model")
-const { checkDiscountExist } = require("../models/repositories/discount.repo")
+const { checkDiscountExist, findAllDiscountCodesUnSelect, findAllDiscountCodesSelect } = require("../models/repositories/discount.repo")
 const { findAllProducts } = require("../models/repositories/product.repository")
 const { convertToObjectMongodb } = require("../utils")
 
@@ -19,13 +19,29 @@ const { convertToObjectMongodb } = require("../utils")
 class DiscountService {
     static async createDiscountCode(body) {
         const {
-            code, start_date, end_date, is_active, shopId, min_order_value, product_ids, applies_to, name, description, type, value, max_value, max_uses, uses_count, users_used, max_uses_per_user
+            code,
+            start_date,
+            end_date,
+            is_active,
+            shopId,
+            min_order_value,
+            product_ids,
+            applies_to,
+            name,
+            description,
+            type,
+            value,
+            max_value,
+            max_uses,
+            uses_count,
+            users_used,
+            max_uses_per_user
         } = body
 
         // tracking
-        if (new Date() < new Date(start_date) || new Date() > new Date(end_date)) {
-            throw new BadRequestError("Discount code has expired!")
-        }
+        // if (new Date() < new Date(start_date) || new Date() > new Date(end_date)) {
+        //     throw new BadRequestError("Discount code has expired!")
+        // }
 
         if (new Date(start_date) >= new Date(end_date)) {
             throw new BadRequestError("Start date must be below than end date")
@@ -83,14 +99,15 @@ class DiscountService {
             discount_shopId: convertToObjectMongodb(shopId)
         }).lean()
 
-        if (!foundDiscount && !foundDiscount.discount_is_active) {
-            throw new NotFoundError("Discount not  existed!")
+        if (!foundDiscount || !foundDiscount.discount_is_active) {
+            throw new NotFoundError("Discount not exist!")
         }
 
         const { discount_applies_to, discount_product_ids } = foundDiscount
         let products
 
         if (discount_applies_to === 'all') {
+            console.log(convertToObjectMongodb(shopId))
             products = await findAllProducts({
                 filter: {
                     product_shop: convertToObjectMongodb(shopId),
@@ -98,7 +115,7 @@ class DiscountService {
                 },
                 limit: +limit,
                 page: +page,
-                sort: 'ctime', /// sort theo thoi gian gần đây nhất
+                sort: 'ctime', // sort theo thoi gian gần đây nhất
                 select: ['product_name']
             })
         }
@@ -118,7 +135,7 @@ class DiscountService {
             })
         }
 
-        return product
+        return products
     }
 
     /*
@@ -126,16 +143,16 @@ class DiscountService {
    */
 
     static async getAllDiscountCodesByShop({
-        limt, page, shopId
+        limit, page, shopId
     }) {
-        const discounts = await findAllDiscountCodesUnSelect({
+        const discounts = await findAllDiscountCodesSelect({
             limit: +limit,
             page: +page,
             filter: {
                 discount_shopId: convertToObjectMongodb(shopId),
                 discount_is_active: true
             },
-            unSelect: ['__v', 'discount_shopId'],
+            select: ['discount_name', 'discount_code'],
             model: discountModel
         })
 
@@ -165,7 +182,7 @@ class DiscountService {
     static async getDiscountAmount({
         codeId, userId, shopId, products
     }) {
-        const foundDiscount = checkDiscountExist({
+        const foundDiscount = await checkDiscountExist({
             model: discountModel,
             filter: {
                 discount_code: codeId,
@@ -178,14 +195,14 @@ class DiscountService {
         }
 
         const { discount_is_active, discount_max_uses, discount_start_date, discount_end_date, discount_min_order_value, discount_users_used, discount_max_uses_per_user, discount_type, discount_value } = foundDiscount
-
+        console.log(foundDiscount)
         if (!discount_is_active) throw new NotFoundError("Discount is expired!")
 
         if (!discount_max_uses) throw new NotFoundError("Discount are out!")
 
-        if (new Date() < new Date(discount_start_date) || new Date() > new Date(discount_end_date)) {
-            throw new NotFoundError("Discount is expired!")
-        }
+        // if (new Date() < new Date(discount_start_date) || new Date() > new Date(discount_end_date)) {
+        //     throw new NotFoundError("Discount is expired!")
+        // }
 
         // check xem có xét giá trị tối thiểu cho discount code không 
         let totalOrder = 0
@@ -259,6 +276,6 @@ class DiscountService {
 
         return result
     }
-
-
 }
+
+module.exports = DiscountService

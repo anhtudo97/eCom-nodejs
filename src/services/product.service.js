@@ -53,7 +53,10 @@ class Product {
 // define sub class for different product types Clothing
 class Clothing extends Product {
     async createProduct() {
-        const newClothing = await clothing.create(this.product_attribute)
+        const newClothing = await clothing.create({
+            ...this.product_attributes,
+            product_shop: this.product_shop
+        })
         if (!newClothing) throw new BadRequestError(`Create new Clothing error`)
 
         const newProduct = await super.createProduct()
@@ -70,7 +73,7 @@ class Electronics extends Product {
             ...this.product_attributes,
             product_shop: this.product_shop
         })
-        if (!newElectronic) throw new BadRequestError(`Create new Clothing error`)
+        if (!newElectronic) throw new BadRequestError(`Create new Electronics error`)
 
         const newProduct = await super.createProduct(newElectronic._id)
         if (!newProduct) throw new BadRequestError(`Create new Product error`)

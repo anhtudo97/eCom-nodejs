@@ -24,7 +24,7 @@ var discountSchema = new Schema(
         discount_shopId: { type: Schema.Types.ObjectId, ref: 'Shop' },
 
         discount_is_active: { type: Boolean, default: true },
-        discount_applies_to: { type: Array, required: true, enum: ['all', 'specific'] },
+        discount_applies_to: { type: String, required: true, enum: ['all', 'specific'] },
         discount_product_ids: { type: Array, default: [] },
     },
     {
