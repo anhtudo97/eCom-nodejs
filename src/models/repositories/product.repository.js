@@ -33,7 +33,7 @@ const searchProductByUser = async ({ searchKey }) => {
 }
 
 const queryProduct = async ({ query, limit, skip }) => {
-    console.log('tuanh',  query, limit, skip);
+    
     return await product.find(query)
         .populate('product_shop', 'name email -_id')
         .sort({ updateAt: -1 })
