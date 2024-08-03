@@ -24,14 +24,13 @@ var cartSchema = new Schema(
             default: 0
         },
         cart_userId: {
-            type: Numberm,
+            type: Number,
             required: true,
         }
     },
     {
-        timestamps: true,
         collection: COLLECTION_NAME,
-        timeseries: {
+        timestamps: {
             createdAt: 'createdOn',
             updatedAt: 'modifiedOn'
         }

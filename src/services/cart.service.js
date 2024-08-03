@@ -1,6 +1,8 @@
 'use strict'
 
+const { NotFoundError } = require("../core/error.response")
 const { cart } = require("../models/cart.model")
+const { getProductById } = require("../models/repositories/product.repository")
 
 /*
     Key features: Cart services
@@ -56,11 +58,82 @@ class CartService {
 
         // neu co gio hang roi nhung cua co san pham 
         if (!userCart.cart_products.length) {
-            userCart.cart_count_product = [product]
+            userCart.cart_products = [product]
             return await userCart.save()
         }
 
         // gio hang ton tai va có sản phẩm này thì update quantity
         return await CartService.updateUserCartQuantity({ userId, product })
     }
+
+    /*
+        update cart v2
+
+        shop_order_ids: [
+            {
+                shopId,
+                item_products: [
+                    {
+                        quantity,
+                        price,
+                        shopId,
+                        old_quantity,
+                        productId
+                    }
+                ],
+                version: 
+            }
+        
+        ]
+    */
+
+    static async addToCartV2({ userId, shop_order_ids = {} }) {
+        const { productId, quantity, old_quantity } = shop_order_ids[0]?.item_products[0]
+
+        // check product
+        const foundProduct = await getProductById(productId)
+        if (!foundProduct) {
+            throw new NotFoundError('')
+        }
+
+        // compare
+        if (foundProduct.product_shop.toString() !== shop_order_ids[0]?.shopId) {
+            throw new NotFoundError('Product dont belong to the shop')
+        }
+
+        if (quantity === 0) {
+            // delete
+        }
+
+        return await CartService.updateUserCartQuantity({
+            userId,
+            product: {
+                productId,
+                quantity: quantity - old_quantity
+            }
+        })
+
+    }
+
+    static async deleteUserCartItem({ userId, productId }) {
+        const query = { cart_userId: userId, cart_state: 'active' }
+        const updateset = {
+            $pull: {
+                cart_products: {
+                    productId
+                }
+            }
+        }
+
+        const deleteCart = await cart.updateOne(query, updateset)
+        return deleteCart
+    }
+
+    static async getListUserCart({ userId }) {
+        return await cart.findOne({
+            cart_userId: +userId
+        }).lean()
+    }
 }
+
+module.exports = CartService;
