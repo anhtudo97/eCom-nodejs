@@ -33,7 +33,7 @@ const searchProductByUser = async ({ searchKey }) => {
 }
 
 const queryProduct = async ({ query, limit, skip }) => {
-    
+
     return await product.find(query)
         .populate('product_shop', 'name email -_id')
         .sort({ updateAt: -1 })
@@ -94,6 +94,21 @@ const getProductById = async (productId) => {
     }).lean()
 }
 
+const checkProductByServer = async products => {
+    return await Promise.all(products.map(async product => {
+        const foundProduct = await getProductById(product.productId)
+        console.log("foundProduct", product, )
+        if (foundProduct) {
+            return {
+                price: foundProduct.product_price,
+                quantity: product.quantity,
+                productId: product.productId
+            }
+        }
+        // return null
+    }))
+}
+
 module.exports = {
     findAllDraftForShop,
     findAllPublishedForShop,
@@ -103,5 +118,6 @@ module.exports = {
     findAllProducts,
     findProduct,
     updateProductById,
-    getProductById
+    getProductById,
+    checkProductByServer
 }
