@@ -1,9 +1,11 @@
 'use strict'
 
 const { BadRequestError } = require("../core/error.response")
+const { order } = require("../models/order.model")
 const { findCartById } = require("../models/repositories/cart.repo")
 const { checkProductByServer } = require("../models/repositories/product.repository")
 const DiscountService = require("./discount.service")
+const { acquireLock, releaseLock } = require("./redis.service")
 
 class CheckoutService {
     /*
@@ -104,6 +106,82 @@ class CheckoutService {
             checkout_order
         }
     }
+
+    // order
+    static async orderByUser({
+        shop_order_ids,
+        cartId,
+        userId,
+        user_address = {},
+        user_payment = {}
+    }) {
+        const { shop_order_ids_new, checkout_order } = await CheckoutService.checkoutReview({
+            cartId,
+            userId,
+            shop_order_ids
+        })
+        const acquireProducts = []
+        // check lai 1 lan nua xem có over stock không ?
+        // get new array Products
+        const products = shop_order_ids_new.flatMap(order => order.item_products)
+        console.log(`[1]:`, products)
+        for (let i = 0; i < products.length; i++) {
+            const { productId, quantity } = products[i];
+            const keyLock = await acquireLock(productId, quantity, cartId)
+            acquireProducts.push(keyLock ? true : false)
+            if (keyLock) {
+                await releaseLock(keyLock)
+            }
+        }
+
+        // check if only have 1 product in stock
+        if (acquireProducts.includes(false)) {
+            throw new BadRequestError("Product is updated, please recheck your cart...")
+        }
+
+        const newOrder = await order.create({
+            order_userId: userId,
+            order_checkout: checkout_order,
+            order_shipping: user_address,
+            order_payment: user_payment,
+            order_products: shop_order_ids_new
+        })
+
+        // case inserted successful => remove product which into cart
+        if (newOrder) {
+            // remove product into cart
+        }
+
+        return newOrder
+    }
+
+    /*
+        > Query Orders [users]
+    */
+   static async getOrdersByUser() {
+
+   }
+
+    /*
+        > Query Orders using Id [users]
+    */
+   static async getOneOrderByUser() {
+
+   }
+
+    /*
+        > Cancel Order [users]
+    */
+   static async canceOrdersByUser() {
+
+   }
+
+    /*
+        > Update Order Status [Shop | Admin]
+    */
+   static async updateOrderStatusByShop() {
+
+   }
 }
 
 module.exports = CheckoutService
