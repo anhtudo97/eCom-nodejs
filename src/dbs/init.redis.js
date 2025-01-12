@@ -26,11 +26,8 @@ const handleEventConnect = (connectionRedis) => {
 }
 
 const initRedis = async () => {
-    const instanceRedis = new Redis("redis://default:ZwB9D9gYkmtHkeqwmvJLi0Cq35gF5vDh@redis-18000.c1.ap-southeast-1-1.ec2.redns.redis-cloud.com:18000")
-    
-    // redis.createClient({
-    //     url: "redis://default:ZwB9D9gYkmtHkeqwmvJLi0Cq35gF5vDh@redis-18000.c1.ap-southeast-1-1.ec2.redns.redis-cloud.com:18000"
-    // })
+    const instanceRedis = new Redis("redis://default:uJyNAZ99dxLuwQ7615qP1cOFosPQr0Cz@redis-12124.c252.ap-southeast-1-1.ec2.redns.redis-cloud.com:12124")
+
     console.log("run redis")
     // await instanceRedis.connect()
     handleEventConnect(instanceRedis)

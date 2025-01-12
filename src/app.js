@@ -29,9 +29,9 @@ app.use(
   }),
 );
 
-require("./tests/inventory.test")
-const productTest = require("./tests/product.test")
-productTest.purchaseProduct("product:001", 10)
+// require("./tests/inventory.test")
+// const productTest = require("./tests/product.test")
+// productTest.purchaseProduct("product:001", 10)
 
 /**
  * Init db

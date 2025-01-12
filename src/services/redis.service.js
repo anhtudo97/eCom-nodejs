@@ -5,10 +5,10 @@ const Redis = require('ioredis')
 const { promisify } = require('util')
 const { reservationInventory } = require('../models/repositories/inventory.repo')
 // const redisClient = redis.createClient({
-//     url: "redis://default:TSDih0CCfUTVu5eaD4OH23K7cgyVvfEL@redis-16761.c252.ap-southeast-1-1.ec2.redns.redis-cloud.com:16761"
+//     url: "redis://default:TSDih0CCfUTVu5eaD4OH23K7cgyVvfEL@redis-12124.c252.ap-southeast-1-1.ec2.redns.redis-cloud.com:12124"
 // })
 // redisClient.connect();
-const redisClient = new Redis("redis://default:TSDih0CCfUTVu5eaD4OH23K7cgyVvfEL@redis-16761.c252.ap-southeast-1-1.ec2.redns.redis-cloud.com:16761")
+const redisClient = new Redis("redis://default:uJyNAZ99dxLuwQ7615qP1cOFosPQr0Cz@redis-12124.c252.ap-southeast-1-1.ec2.redns.redis-cloud.com:12124")
 
 // const pexpire = promisify(redisClient.pExpire).bind(redisClient)
 // const setnxAsync = promisify(redisClient.setNX).bind(redisClient)
