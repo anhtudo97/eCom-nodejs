@@ -89,6 +89,7 @@ const updateProductById = async ({ product_id, payload, model, isNew = true }) =
 }
 
 const getProductById = async (productId) => {
+    console.log("productid", productId)
     return await product.findOne({
         _id: convertToObjectIdMongodb(productId)
     }).lean()

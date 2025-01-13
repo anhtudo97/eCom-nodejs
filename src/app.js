@@ -29,10 +29,16 @@ app.use(
   }),
 );
 
+// require("./tests/inventory.test")
+// const productTest = require("./tests/product.test")
+// productTest.purchaseProduct("product:001", 10)
+
 /**
  * Init db
  */
 require('./dbs/init.mongodb');
+// const redis = require("./dbs/init.redis")
+// redis.initRedis()
 // const { checkOverload } = require('./helpers/check.connect');
 // checkOverload();
 
