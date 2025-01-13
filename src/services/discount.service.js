@@ -4,7 +4,7 @@ const { BadRequestError, NotFoundError } = require("../core/error.response")
 const discountModel = require("../models/discount.model")
 const { checkDiscountExist, findAllDiscountCodesUnSelect, findAllDiscountCodesSelect } = require("../models/repositories/discount.repo")
 const { findAllProducts } = require("../models/repositories/product.repository")
-const { convertToObjectMongodb } = require("../utils")
+const { convertToObjectMongodb, convertToObjectIdMongodb } = require("../utils")
 
 /**
  * Discount service
@@ -50,7 +50,7 @@ class DiscountService {
         // crete index for discount code
         const foundDiscount = await discountModel.findOne({
             discount_code: code,
-            discount_shopId: convertToObjectMongodb(shopId)
+            discount_shopId: convertToObjectIdMongodb(shopId)
         }).lean()
 
         if (foundDiscount && foundDiscount.discount_is_active) {
@@ -96,7 +96,7 @@ class DiscountService {
         // create index for discount code
         const foundDiscount = await discountModel.findOne({
             discount_code: code,
-            discount_shopId: convertToObjectMongodb(shopId)
+            discount_shopId: convertToObjectIdMongodb(shopId)
         }).lean()
 
         if (!foundDiscount || !foundDiscount.discount_is_active) {
@@ -107,10 +107,10 @@ class DiscountService {
         let products
 
         if (discount_applies_to === 'all') {
-            console.log(convertToObjectMongodb(shopId))
+            console.log(convertToObjectIdMongodb(shopId))
             products = await findAllProducts({
                 filter: {
-                    product_shop: convertToObjectMongodb(shopId),
+                    product_shop: convertToObjectIdMongodb(shopId),
                     isPublished: true
                 },
                 limit: +limit,
@@ -149,7 +149,7 @@ class DiscountService {
             limit: +limit,
             page: +page,
             filter: {
-                discount_shopId: convertToObjectMongodb(shopId),
+                discount_shopId: convertToObjectIdMongodb(shopId),
                 discount_is_active: true
             },
             select: ['discount_name', 'discount_code'],
@@ -186,7 +186,7 @@ class DiscountService {
             model: discountModel,
             filter: {
                 discount_code: codeId,
-                discount_shopId: convertToObjectMongodb(shopId)
+                discount_shopId: convertToObjectIdMongodb(shopId)
             }
         })
 
@@ -195,7 +195,7 @@ class DiscountService {
         }
 
         const { discount_is_active, discount_max_uses, discount_start_date, discount_end_date, discount_min_order_value, discount_users_used, discount_max_uses_per_user, discount_type, discount_value } = foundDiscount
-        console.log(foundDiscount)
+        console.log("foundDiscount", foundDiscount)
         if (!discount_is_active) throw new NotFoundError("Discount is expired!")
 
         if (!discount_max_uses) throw new NotFoundError("Discount are out!")
@@ -211,8 +211,8 @@ class DiscountService {
             totalOrder = products.reduce((acc, product) => {
                 return acc + (product.quantity * product.price)
             }, 0)
-
-            if (totalOrder > discount_min_order_value) {
+            console.log("totalOrder", totalOrder)
+            if (totalOrder < discount_min_order_value) {
                 throw new NotFoundError(`Discount requires a minimum order value of ${discount_min_order_value}`)
             }
         }

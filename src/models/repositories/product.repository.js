@@ -2,7 +2,7 @@
 
 const { Types } = require('mongoose')
 const { product, electronic, clothing, furniture } = require('../../models/product.model')
-const { getSelectData, unGetSelectData } = require('../../utils')
+const { getSelectData, unGetSelectData, convertToObjectIdMongodb } = require('../../utils')
 
 const findAllDraftForShop = async ({ query, limit, skip }) => {
     return await queryProduct({ query, limit, skip })
@@ -33,7 +33,7 @@ const searchProductByUser = async ({ searchKey }) => {
 }
 
 const queryProduct = async ({ query, limit, skip }) => {
-    
+
     return await product.find(query)
         .populate('product_shop', 'name email -_id')
         .sort({ updateAt: -1 })
@@ -88,6 +88,27 @@ const updateProductById = async ({ product_id, payload, model, isNew = true }) =
     })
 }
 
+const getProductById = async (productId) => {
+    return await product.findOne({
+        _id: convertToObjectIdMongodb(productId)
+    }).lean()
+}
+
+const checkProductByServer = async products => {
+    return await Promise.all(products.map(async product => {
+        const foundProduct = await getProductById(product.productId)
+        console.log("foundProduct", product, )
+        if (foundProduct) {
+            return {
+                price: foundProduct.product_price,
+                quantity: product.quantity,
+                productId: product.productId
+            }
+        }
+        // return null
+    }))
+}
+
 module.exports = {
     findAllDraftForShop,
     findAllPublishedForShop,
@@ -96,5 +117,7 @@ module.exports = {
     searchProductByUser,
     findAllProducts,
     findProduct,
-    updateProductById
+    updateProductById,
+    getProductById,
+    checkProductByServer
 }
