@@ -2,8 +2,8 @@ const Redis = require("ioredis")
 
 class RedisPubSubService {
     constructor() {
-        this.sub = new Redis("redis://default:uJyNAZ99dxLuwQ7615qP1cOFosPQr0Cz@redis-12124.c252.ap-southeast-1-1.ec2.redns.redis-cloud.com:12124");
-        this.pub = new Redis("redis://default:uJyNAZ99dxLuwQ7615qP1cOFosPQr0Cz@redis-12124.c252.ap-southeast-1-1.ec2.redns.redis-cloud.com:12124");
+        this.sub = new Redis("redis://default:612aUtf73URncNIhjD4eA22ztCOHK5tM@redis-17032.c81.us-east-1-2.ec2.redns.redis-cloud.com:17032");
+        this.pub = new Redis("redis://default:612aUtf73URncNIhjD4eA22ztCOHK5tM@redis-17032.c81.us-east-1-2.ec2.redns.redis-cloud.com:17032");
     }
 
     publish(channel, message) {
