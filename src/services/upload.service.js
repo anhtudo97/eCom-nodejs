@@ -1,6 +1,7 @@
 "use strict";
 
 const { forEach, forIn } = require("lodash");
+const crypto = require("crypto")
 const cloudinary = require("../configs/cloudinary.config");
 const { PutObjectCommand, s3 } = require("../configs/s3.config");
 
@@ -11,25 +12,18 @@ const uploadImageFromLocalS3 = async ({
     file,
 }) => {
     try {
+        console.log("file::: ", file)
+        const randomImageName = () => crypto.randomBytes(16).toString("hex")
         const command = new PutObjectCommand({
             Bucket: process.env.AWS_S3_BUCKET_NAME,
-            Key: file.originalname || 'unknown',
+            Key: randomImageName() || 'unknown',
             Body: file.buffer,
             ContentType: 'image/jpeg' // that what u need
         })
 
         const result = await s3.send(command)
 
-        return {
-            image_url: result.secure_url,
-            shopId: 8400,
-            thumb_url: await cloudinary.url(result.public_id, {
-                height: 100,
-                width: 100,
-                format: 'webp',
-                // size: 10
-            })
-        }
+        return result
     } catch (error) {
         console.error(`Error uploading::`, error)
     }
