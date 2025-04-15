@@ -1,6 +1,7 @@
 'use strict'
 
 const Redis = require("ioredis");
+const { REDIS_URL } = require("../utils");
 
 let client = {}
 const statusConnectRedis = {
@@ -26,7 +27,7 @@ const handleEventConnect = (connectionRedis) => {
 }
 
 const initRedis = async () => {
-    const instanceRedis = new Redis("redis://default:612aUtf73URncNIhjD4eA22ztCOHK5tM@redis-17032.c81.us-east-1-2.ec2.redns.redis-cloud.com:17032")
+    const instanceRedis = new Redis(REDIS_URL, { retryStrategy: null })
 
     console.log("run redis")
     // await instanceRedis.connect()
@@ -38,7 +39,7 @@ const getRedis = () => {
 
 }
 
-const closeRedis = async() => {
+const closeRedis = async () => {
     await client.quit()
 }
 

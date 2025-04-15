@@ -1,9 +1,10 @@
-const Redis = require("ioredis")
+const Redis = require("ioredis");
+const { REDIS_URL } = require("../utils");
 
 class RedisPubSubService {
     constructor() {
-        this.sub = new Redis("redis://default:612aUtf73URncNIhjD4eA22ztCOHK5tM@redis-17032.c81.us-east-1-2.ec2.redns.redis-cloud.com:17032");
-        this.pub = new Redis("redis://default:612aUtf73URncNIhjD4eA22ztCOHK5tM@redis-17032.c81.us-east-1-2.ec2.redns.redis-cloud.com:17032");
+        this.sub = new Redis(REDIS_URL, { retryStrategy: null });
+        this.pub = new Redis(REDIS_URL, { retryStrategy: null });
     }
 
     publish(channel, message) {

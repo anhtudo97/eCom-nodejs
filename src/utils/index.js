@@ -1,5 +1,6 @@
 'use strict';
 
+const REDIS_URL = "redis://127.0.0.1:6379"
 const _ = require('lodash');
 const { Types } = require('mongoose');
 
@@ -62,5 +63,6 @@ const updateNestedObjectParser = object => {
 const convertToObjectIdMongodb = id => new Types.ObjectId(id)
 
 module.exports = {
+  REDIS_URL,
   getInfoData, getSelectData, unGetSelectData, removeUndefinedObject, updateNestedObjectParser, convertToObjectIdMongodb
 };
