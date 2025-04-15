@@ -6,9 +6,9 @@ const cloudinary = require('cloudinary').v2;
 // Return "https" URLs by setting secure: true
 cloudinary.config({
 
-    cloud_name: 'dr6dvtmxv',
-    api_key: '357867119592425',
-    api_secret: 'Rz0aVvd8Av1CSr2nIpfQchUtnCk',
+    cloud_name: process.env.CLOUDINARY_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
     secure: true
 });
 
