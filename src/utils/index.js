@@ -1,8 +1,11 @@
 'use strict';
 
+const crypto = require("crypto")
 const REDIS_URL = "redis://127.0.0.1:6379"
 const _ = require('lodash');
 const { Types } = require('mongoose');
+
+const randomImageName = () => crypto.randomBytes(16).toString("hex")
 
 const getInfoData = ({ fields = [], object = {} }) => {
   return _.pick(object, fields);
@@ -64,5 +67,11 @@ const convertToObjectIdMongodb = id => new Types.ObjectId(id)
 
 module.exports = {
   REDIS_URL,
-  getInfoData, getSelectData, unGetSelectData, removeUndefinedObject, updateNestedObjectParser, convertToObjectIdMongodb
+  getInfoData,
+  randomImageName,
+  getSelectData,
+  unGetSelectData,
+  removeUndefinedObject,
+  updateNestedObjectParser,
+  convertToObjectIdMongodb
 };

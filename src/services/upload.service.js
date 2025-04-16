@@ -1,9 +1,10 @@
 "use strict";
 
-const { forEach, forIn } = require("lodash");
-const crypto = require("crypto")
+
 const cloudinary = require("../configs/cloudinary.config");
-const { PutObjectCommand, s3 } = require("../configs/s3.config");
+const { PutObjectCommand, s3, GetObjectCommand } = require("../configs/s3.config");
+const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
+const { randomImageName } = require("../utils");
 
 // Using S3
 
@@ -13,17 +14,24 @@ const uploadImageFromLocalS3 = async ({
 }) => {
     try {
         console.log("file::: ", file)
-        const randomImageName = () => crypto.randomBytes(16).toString("hex")
+        const imageName = randomImageName()
         const command = new PutObjectCommand({
             Bucket: process.env.AWS_S3_BUCKET_NAME,
-            Key: randomImageName() || 'unknown',
+            Key: imageName || 'unknown',
             Body: file.buffer,
             ContentType: 'image/jpeg' // that what u need
         })
 
-        const result = await s3.send(command)
+        await s3.send(command)
+        const signalUrl = new GetObjectCommand({
+            Bucket: process.env.AWS_S3_BUCKET_NAME,
+            Key: imageName,
+        })
 
-        return result
+        const url = await getSignedUrl(s3, signalUrl, { expiresIn: 3000 })
+        console.log("url::", url)
+
+        return url
     } catch (error) {
         console.error(`Error uploading::`, error)
     }
