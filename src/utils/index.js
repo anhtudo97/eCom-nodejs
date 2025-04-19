@@ -1,5 +1,6 @@
 'use strict';
 
+const { getSignedUrl } = require("@aws-sdk/cloudfront-signer"); // CJS
 const crypto = require("crypto")
 const REDIS_URL = "redis://127.0.0.1:6379"
 const _ = require('lodash');
@@ -65,6 +66,21 @@ const updateNestedObjectParser = object => {
 
 const convertToObjectIdMongodb = id => new Types.ObjectId(id)
 
+const getNewUrlSigner = (url, date) => {
+  const privateKey = process.env.AWS_S3_CLOUDFRONT_PRIVATE_KEY;
+  const keyPairId = process.env.AWS_S3_CLOUDFRONT_PUBLIC_KEY;
+  const dateLessThan = date; // any Date constructor compatible
+
+  const signedUrl = getSignedUrl({
+    url,
+    keyPairId,
+    dateLessThan,
+    privateKey,
+  });
+
+  return signedUrl
+}
+
 module.exports = {
   REDIS_URL,
   getInfoData,
@@ -73,5 +89,6 @@ module.exports = {
   unGetSelectData,
   removeUndefinedObject,
   updateNestedObjectParser,
-  convertToObjectIdMongodb
+  convertToObjectIdMongodb,
+  getNewUrlSigner
 };

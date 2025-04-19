@@ -3,11 +3,12 @@
 
 const cloudinary = require("../configs/cloudinary.config");
 const { PutObjectCommand, s3, GetObjectCommand } = require("../configs/s3.config");
-const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
-const { randomImageName } = require("../utils");
+const { randomImageName, getNewUrlSigner } = require("../utils");
 
 // Using S3
-
+// const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
+// const { getSignedUrl } = require("@aws-sdk/cloudfront-signer"); // CJS
+const urlCloudFrontS3 = "https://dduz18mv3xe1n.cloudfront.net"
 // 1. UPLOAD IMAGE
 const uploadImageFromLocalS3 = async ({
     file,
@@ -22,16 +23,23 @@ const uploadImageFromLocalS3 = async ({
             ContentType: 'image/jpeg' // that what u need
         })
 
-        await s3.send(command)
+        const result = await s3.send(command)
         const signalUrl = new GetObjectCommand({
             Bucket: process.env.AWS_S3_BUCKET_NAME,
             Key: imageName,
         })
 
-        const url = await getSignedUrl(s3, signalUrl, { expiresIn: 3000 })
+        // const url = await getSignedUrl(s3, signalUrl, { expiresIn: 36000 })
+        const url = getNewUrlSigner(
+            `${urlCloudFrontS3}/${imageName}`,
+            new Date(Date.now() + 1000 * 60)
+        )
         console.log("url::", url)
 
-        return url
+        return {
+            url,
+            result
+        }
     } catch (error) {
         console.error(`Error uploading::`, error)
     }
