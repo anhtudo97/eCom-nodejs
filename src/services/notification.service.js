@@ -1,6 +1,6 @@
 'use strict'
 
-const { noti } = require("../models/Notification.model")
+const { noti } = require("../models/notification.model")
 
 const pushNotiToSystem = async ({
     type = 'SHOP-001',
