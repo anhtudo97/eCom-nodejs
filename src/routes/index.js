@@ -4,7 +4,7 @@ const express = require('express');
 const { apiKey, permission } = require('../auth/checkAuth');
 const router = express.Router();
 
-router.get('/checkstatus', (req, res, next) => {
+router.get('/api/status', (req, res, next) => {
     res.status(200).json({
         status: 'success',
         message: 'api oke'
