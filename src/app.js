@@ -36,7 +36,7 @@ app.use(
 /**
  * Init db
  */
-// require('./dbs/init.mongodb');
+require('./dbs/init.mongodb');
 // const redis = require("./dbs/init.redis")
 // redis.initRedis()
 // const { checkOverload } = require('./helpers/check.connect');
@@ -45,13 +45,13 @@ app.use(
 /**
  * Init routes
  */
-// app.get('/', (req, res, next) => {
-//   // const strCompress = 'Hello Alex';
-//   return res.status(200).json({
-//     message: 'Welcome to our website',
-//     // metadata: strCompress.repeat(10000)
-//   });
-// });
+app.get('/', (req, res, next) => {
+  // const strCompress = 'Hello Alex';
+  return res.status(200).json({
+    message: 'Welcome to our website',
+    // metadata: strCompress.repeat(10000)
+  });
+});
 app.use('', require('./routes'));
 
 /**

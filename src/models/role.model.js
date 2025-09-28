@@ -30,15 +30,15 @@ var roleSchema = new Schema(
     },
 );
 
-const grants = [
-    // role ADMIN
-    { resource: 'profile', actions: ['create', 'read', 'update', 'delete'], attributes: '*' },
-    { resource: 'balance', actions: ['create', 'read', 'update', 'delete'], attributes: '*, !amount' },
+// const grants = [
+//     // role ADMIN
+//     { resource: 'profile', actions: ['create', 'read', 'update', 'delete'], attributes: '*' },
+//     { resource: 'balance', actions: ['create', 'read', 'update', 'delete'], attributes: '*, !amount' },
 
-    // role USER
-    { resource: 'profile', actions: ['read', 'update'], attributes: '*' },
-    { resource: 'balance', actions: ['read'], attributes: '*, !amount' },
-]
+//     // role USER
+//     { resource: 'profile', actions: ['read', 'update'], attributes: '*' },
+//     { resource: 'balance', actions: ['read'], attributes: '*, !amount' },
+// ]
 
 //Export the model
 module.exports = {

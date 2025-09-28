@@ -39,6 +39,16 @@ services:
     #   - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
     #   - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
     #   - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+  redis:
+    image: redis:latest # Specifies the official Redis Docker image
+    container_name: redis-shopdev # Assigns a name to the container
+    ports:
+      - "6379:6379" # Maps port 6379 on the host to port 6379 in the container
+    volumes:
+      - redis_data:/data # Mounts a named volume for data persistence
+    restart: always # Configures the container to always restart if it stops
 volumes:
   kafka_data:
+    driver: local
+  redis_data: # Defines the named volume
     driver: local
