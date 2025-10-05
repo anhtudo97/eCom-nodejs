@@ -10,7 +10,7 @@ const COLLECTION_NAME = 'Resources';
 var resourceSchema = new Schema(
     {
         src_name: { type: String, required: true }, // profile
-        src_slug: { type: Number, required: true }, // 00001
+        src_slug: { type: String, required: true }, // 00001
         src_description: { type: String, default: "" },
     },
     {

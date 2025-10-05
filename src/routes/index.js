@@ -19,6 +19,7 @@ router.use(permission('0000'));
 
 // ROUTES
 router.use('/v1/api/discount', require('./discount'));
+router.use('/v1/api/rbac', require('./rbac'));
 router.use('/v1/api/cart', require('./cart'));
 router.use('/v1/api/profile', require('./profile'));
 router.use('/v1/api/checkout', require('./checkout'));

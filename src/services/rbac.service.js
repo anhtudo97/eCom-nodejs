@@ -40,7 +40,7 @@ const createResource = async ({ name = 'profile', slug = 'p0001', description = 
 const resourceList = async ({ userId = 0, limit = 30, offset = 0, search = '' }) => {
     try {
         // 1. check is admin
-        if (userId !== 1) return []
+        // if (userId !== 1) return []
 
         // 2. get resources
         const resources = await resource.aggregate([
@@ -103,21 +103,53 @@ const createRole = async ({ name, slug, description, grants }) => {
 const roleList = async ({ userId = 0, limit = 30, offset = 0, search = '' }) => {
     try {
         // 1. check is admin
-        if (userId !== 1) return []
+        // if (userId !== 1) return []
 
         // 2. get roles
         const roles = await role.aggregate([
             {
-                $project: {
-                    _id: 1,
-                    name: '$role_name',
-                    slug: '$role_slug',
-                    description: '$role_description',
-                    createdAt: 1
+
+                $unwind: {
+                    path: '$role_grants',
+                },
+            },
+            {
+                $lookup: {
+                    from: 'Resources',
+                    localField: 'role_grants.resource',
+                    foreignField: '_id',
+                    as: 'resource_info'
                 }
             },
-            { $limit: limit },
-            { $skip: offset }
+            {
+                $unwind: {
+                    path: '$resource_info',
+                }
+            },
+            {
+                $project: {
+                    role: '$role_name',
+                    resource: '$resource_info.src_name',
+                    actions: '$role_grants.actions',
+                    attributes: '$role_grants.attributes',
+                }
+            },
+            {
+                $unwind: {
+                    path: '$actions',
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    role: 1,
+                    resource: 1,
+                    action: '$actions',
+                    attributes: 1,
+                }
+            },
+            // { $limit: limit },
+            // { $skip: offset }
         ]);
 
         return roles;

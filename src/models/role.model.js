@@ -10,7 +10,7 @@ const COLLECTION_NAME = 'Roles';
 var roleSchema = new Schema(
     {
         role_name: { type: String, default: 'user', enum: ['user', 'admin', 'shop'] }, // profile
-        role_slug: { type: Number, required: true }, // 00001
+        role_slug: { type: String, required: true }, // 00001
         role_status: { type: String, default: 'active', enum: ['active', 'pending', 'block'] }, // 00001
         role_description: { type: String, default: "" },
         role_grants: [
