@@ -42,5 +42,5 @@ var roleSchema = new Schema(
 
 //Export the model
 module.exports = {
-    resource: model(DOCUMENT_NAME, roleSchema)
+    role: model(DOCUMENT_NAME, roleSchema)
 }
