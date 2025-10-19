@@ -17,8 +17,8 @@ class ErrorResponse extends Error {
   constructor(message, status) {
     super(message);
     this.status = status;
-
-    mylogger.error(this.message, ['/api/v1/login', 'N/A', { error: this.message }]);
+    this.now = Date.now();
+    // mylogger.error(this.message, ['/api/v1/login', 'N/A', { error: this.message }]);
   }
 }
 

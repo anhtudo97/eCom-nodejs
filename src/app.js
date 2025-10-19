@@ -3,6 +3,8 @@ const express = require('express');
 const morgan = require('morgan');
 const { default: helmet } = require('helmet');
 const compression = require('compression');
+const { v4: uuidv4 } = require('uuid')
+const myLogger = require('./loggers/mylogger.log');
 
 /**
  * Instance
@@ -28,6 +30,19 @@ app.use(
     extended: true,
   }),
 );
+
+app.use((req, res, next) => {
+  const requestId = req.headers['x-request-id'] || uuidv4();
+  req.requestId = requestId;
+  myLogger.log(`input parameters -- ${req.method}`, [
+    req.path,
+    {
+      requestId: req.requestId,
+    },
+    req.method === 'POST' ? req.body : req.query,
+  ])
+  next();
+})
 
 // require("./tests/inventory.test")
 // const productTest = require("./tests/product.test")
@@ -58,15 +73,24 @@ app.use('', require('./routes'));
  * Handle error
  */
 
-app.use((req, res, next)=> {
+app.use((req, res, next) => {
   const error = new Error('Not found')
   error.status = 404
   next(error)
 })
 
-app.use((error, req, res,next) => {
+app.use((error, req, res, next) => {
   const statusCode = error.status || 500
-
+  const message = `${statusCode} - ${Date.now() - error.now} - ${req.originalUrl} - ${req.method} - ${req.ip}`
+  myLogger.error(message, [
+    req.path,
+    {
+      requestId: req.requestId,
+    },
+    {
+      message: error.message,
+    }
+  ])
   return res.status(statusCode).json({
     status: 'error',
     code: statusCode,
@@ -75,7 +99,7 @@ app.use((error, req, res,next) => {
     */
     stack: error.stack,
     message: error.message || 'Internal Server Error'
-  }) 
+  })
 })
 
 module.exports = app;

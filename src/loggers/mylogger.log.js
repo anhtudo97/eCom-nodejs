@@ -6,6 +6,18 @@ const { combine, timestamp, printf, colorize } = format;
 
 const { v4: uuidv4 } = require('uuid');
 
+
+/*
+    error: nghiêm trọng, hệ thống bị lỗi
+    warn: cảnh báo, có thể gây lỗi trong tương lai
+    info: thông tin chung về hoạt động của hệ thống
+    http: thông tin về các yêu cầu HTTP
+    verbose: thông tin chi tiết hơn về hoạt động của hệ thống
+    debug: thông tin dùng để gỡ lỗi
+    silly: thông tin rất chi tiết, thường không cần thiết trong môi trường sản xuất
+    requestId or traceId: định danh duy nhất cho mỗi yêu cầu hoặc phiên làm việc, giúp theo dõi và gỡ lỗi dễ dàng hơn
+*/
+
 class MyLogger {
     constructor() {
         const formatPrint = printf(
