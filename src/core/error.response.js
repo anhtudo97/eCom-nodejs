@@ -9,6 +9,7 @@ const ReasonStatusCode = {
   FORBIDDEN: 'Bad request error',
   CONFLICT: 'Conflict error',
 };
+const mylogger = require('../loggers/mylogger.log');
 
 const { ReasonPhrases, StatusCodes } = require('../utils/httpStatusCode');
 
@@ -16,6 +17,8 @@ class ErrorResponse extends Error {
   constructor(message, status) {
     super(message);
     this.status = status;
+
+    mylogger.error(this.message, ['/api/v1/login', 'N/A', { error: this.message }]);
   }
 }
 
