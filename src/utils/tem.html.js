@@ -5,11 +5,11 @@ const templateHTML = ({ tem_name }) => {
     return `<h1>This is a template for ${tem_name}</h1>`;
 }
 
-const emailVerificationTemplate = ({ 
-    userName: tem_name, 
-    verifyLink, 
-    companyName = 'Your Company', 
-    supportEmail = 'support@yourcompany.com' 
+const emailVerificationTemplate = ({
+    userName: tem_name,
+    verifyLink,
+    companyName = 'Your Company',
+    supportEmail = 'support@yourcompany.com'
 }) => {
     return `
 <!DOCTYPE html>
@@ -99,12 +99,12 @@ const emailVerificationTemplate = ({
             <p>Cảm ơn bạn đã đăng ký tài khoản tại ${companyName}. Để hoàn tất quá trình đăng ký và bảo mật tài khoản của bạn, vui lòng xác thực địa chỉ email bằng cách nhấp vào nút bên dưới:</p>
             
             <div style="text-align: center;">
-                <a href="${verifyLink}" class="verify-button">Xác thực Email</a>
+                <a href="{{verifyLink}}" class="verify-button">Xác thực Email</a>
             </div>
             
             <p>Hoặc bạn có thể sao chép và dán liên kết sau vào trình duyệt:</p>
             <div class="verify-link">
-                ${verifyLink}
+                {{verifyLink}}
             </div>
             
             <div class="warning">
@@ -127,11 +127,11 @@ const emailVerificationTemplate = ({
 </html>`;
 }
 
-const passwordResetTemplate = ({ 
-    userName, 
-    resetLink, 
-    companyName = 'Your Company', 
-    supportEmail = 'support@yourcompany.com' 
+const passwordResetTemplate = ({
+    userName,
+    resetLink,
+    companyName = 'Your Company',
+    supportEmail = 'support@yourcompany.com'
 }) => {
     return `
 <!DOCTYPE html>

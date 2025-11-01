@@ -81,6 +81,14 @@ const getNewUrlSigner = (url, date) => {
   return signedUrl
 }
 
+const replacePlaceholders = (template, placeholders) => {
+  Object.keys(placeholders).forEach(key => {
+    const regex = new RegExp(`{{${key}}}`, 'g');
+    template = template.replace(regex, placeholders[key]);
+  });
+  return template;
+};
+
 module.exports = {
   REDIS_URL,
   getInfoData,
@@ -90,5 +98,6 @@ module.exports = {
   removeUndefinedObject,
   updateNestedObjectParser,
   convertToObjectIdMongodb,
-  getNewUrlSigner
+  getNewUrlSigner,
+  replacePlaceholders
 };

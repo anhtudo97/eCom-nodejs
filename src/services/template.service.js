@@ -5,7 +5,7 @@ const { emailVerificationTemplate } = require("../utils/tem.html");
 
 const newTemplateEmail = async ({
     tem_name,
-    tem_html
+    tem_id
 }) => {
     // Implementation for creating a new email template
 
@@ -15,6 +15,7 @@ const newTemplateEmail = async ({
 
     // 3. create new template
     const newTemplate = await template.create({
+        tem_id,
         tem_name,
         tem_html: emailVerificationTemplate({ tem_name }),
     });
@@ -22,11 +23,13 @@ const newTemplateEmail = async ({
 }
 
 const getTemplateEmail = async ({
-    tem_name
+    tem_name,
+    tem_id
 }) => {
     // Implementation for retrieving the email template
     const template = await newTemplateEmail({
         tem_name,
+        tem_id
     });
     return template;
 }

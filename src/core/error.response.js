@@ -68,6 +68,7 @@ class ForbiddenError extends ErrorResponse {
 }
 
 module.exports = {
+  ErrorResponse,
   ConflictRequestError,
   BadRequestError,
   AuthFailureError,
